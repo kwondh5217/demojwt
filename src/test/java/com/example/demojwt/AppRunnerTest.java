@@ -26,7 +26,7 @@ class AppRunnerTest {
         Optional<Account> byId = this.accountRepository.findById(1L);
         assertThat(byId).isNotEmpty();
         Account account = byId.get();
-        assertThat(account.getAuthoritySet().size()).isEqualTo(2);
+        assertThat(account.getAuthorities().size()).isEqualTo(2);
     }
 
 }

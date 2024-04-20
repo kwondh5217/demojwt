@@ -1,6 +1,6 @@
 package com.example.demojwt.jwt;
 
-import com.example.demojwt.service.AccountService;
+import com.example.demojwt.service.CustomUserDetailsService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -21,7 +21,7 @@ class TokenProviderTest {
     TokenUtils tokenUtils;
 
     @Autowired
-    AccountService accountService;
+    CustomUserDetailsService customUserDetailsService;
 
     private Authentication authentication;
 

@@ -3,7 +3,6 @@ package com.example.demojwt.entity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
-import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.Set;
 
@@ -28,10 +27,10 @@ public class Account {
     @JsonIgnore
     private boolean activated;
 
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany
     @JoinTable(
             name = "account_authority",
             joinColumns = {@JoinColumn(name = "account_id", referencedColumnName = "account_id")},
             inverseJoinColumns = {@JoinColumn(name = "authority_name", referencedColumnName = "authority_name")})
-    private Set<Authority> authoritySet;
+    private Set<Authority> authorities;
 }
