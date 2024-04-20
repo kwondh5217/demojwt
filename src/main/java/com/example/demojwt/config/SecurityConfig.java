@@ -9,7 +9,6 @@ import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.Customizer;
-import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -45,18 +44,24 @@ public class SecurityConfig {
         http
                 .headers(header ->
                         header.frameOptions(HeadersConfigurer.FrameOptionsConfig::disable))
+
                 .csrf(AbstractHttpConfigurer::disable)
+
                 .exceptionHandling(handler ->
                         handler.authenticationEntryPoint(jwtAuthenticationEntryPoint)
                                 .accessDeniedHandler(jwtAccessDeniedHandler))
+
                 .addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
+
                 .sessionManagement(sessionManagement ->
                         sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+
                 .authorizeHttpRequests(request ->{
                     request.requestMatchers(PathRequest.toH2Console()).permitAll()
-                    .requestMatchers("/api/hello").permitAll()
+                    .requestMatchers("/api/**").permitAll()
                     .anyRequest().authenticated();
-        }).formLogin(Customizer.withDefaults());
+        }).
+                formLogin(Customizer.withDefaults());
         return http.build();
     }
 

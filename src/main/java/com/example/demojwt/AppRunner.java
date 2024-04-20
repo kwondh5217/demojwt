@@ -3,6 +3,7 @@ package com.example.demojwt;
 import com.example.demojwt.entity.Account;
 import com.example.demojwt.entity.Authority;
 import com.example.demojwt.repository.AuthorityRepository;
+import com.example.demojwt.service.AccountService;
 import com.example.demojwt.service.CustomUserDetailsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.ApplicationArguments;
@@ -15,7 +16,7 @@ import java.util.Set;
 @Component
 public class AppRunner implements ApplicationRunner {
 
-    private final CustomUserDetailsService customUserDetailsService;
+    private final AccountService accountService;
     private final AuthorityRepository authorityRepository;
 
     @Override
@@ -36,6 +37,6 @@ public class AppRunner implements ApplicationRunner {
                 .activated(true)
                 .authorities(Set.of(saveUser, saveAdmin))
                 .build();
-        this.customUserDetailsService.saveAccount(account);
+        this.accountService.saveAccount(account);
     }
 }

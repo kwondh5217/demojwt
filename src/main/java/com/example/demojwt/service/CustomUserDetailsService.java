@@ -26,7 +26,6 @@ public class CustomUserDetailsService implements UserDetailsService {
         return accountRepository.findOneWithAuthoritiesByUsername(username)
                 .map(account -> createUser(username, account))
                 .orElseThrow(() -> new UsernameNotFoundException(username + " not found"));
-
     }
 
     private UserDetails createUser(String username, Account account){
