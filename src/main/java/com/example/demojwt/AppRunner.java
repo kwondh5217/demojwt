@@ -2,12 +2,13 @@ package com.example.demojwt;
 
 import com.example.demojwt.entity.Account;
 import com.example.demojwt.entity.Authority;
+import com.example.demojwt.repository.AccountRepository;
 import com.example.demojwt.repository.AuthorityRepository;
 import com.example.demojwt.service.AccountService;
-import com.example.demojwt.service.CustomUserDetailsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import java.util.Set;
@@ -16,8 +17,9 @@ import java.util.Set;
 @Component
 public class AppRunner implements ApplicationRunner {
 
-    private final AccountService accountService;
+    private final AccountRepository accountRepository;
     private final AuthorityRepository authorityRepository;
+    private final PasswordEncoder passwordEncoder;
 
     @Override
     public void run(ApplicationArguments args){
@@ -33,10 +35,11 @@ public class AppRunner implements ApplicationRunner {
         Account account = Account.builder()
                 .userId(1L)
                 .username("daeho")
-                .password("pass")
+                .nickname("daeho nickname")
+                .password(passwordEncoder.encode("pass"))
                 .activated(true)
                 .authorities(Set.of(saveUser, saveAdmin))
                 .build();
-        this.accountService.saveAccount(account);
+        this.accountRepository.save(account);
     }
 }

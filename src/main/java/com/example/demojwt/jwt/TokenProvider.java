@@ -21,7 +21,7 @@ import java.util.stream.Collectors;
 
 @Slf4j
 @Component
-public class TokenUtils implements InitializingBean{
+public class TokenProvider implements InitializingBean{
 
 
     private static final String AUTHORITIES_KEY = "auth";
@@ -31,7 +31,7 @@ public class TokenUtils implements InitializingBean{
     private final long tokenValidityInMilliseconds;
     private Key key;
 
-    public TokenUtils(@Value("${jwt.secret}") String secret,
+    public TokenProvider(@Value("${jwt.secret}") String secret,
                          @Value("${jwt.token-validity-in-seconds}") long tokenValidityInMilliseconds) {
         this.secret = secret;
         this.tokenValidityInMilliseconds = tokenValidityInMilliseconds * 1000;

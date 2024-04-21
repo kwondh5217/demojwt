@@ -18,7 +18,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 class TokenProviderTest {
 
     @Autowired
-    TokenUtils tokenUtils;
+    TokenProvider tokenProvider;
 
     @Autowired
     CustomUserDetailsService customUserDetailsService;
@@ -32,11 +32,11 @@ class TokenProviderTest {
         List<GrantedAuthority> authorities = Collections.singletonList(new SimpleGrantedAuthority("ROLE_USER"));
         this.authentication = new UsernamePasswordAuthenticationToken("user", "password", authorities);
 
-        String token = this.tokenUtils.createToken(authentication);
+        String token = this.tokenProvider.createToken(authentication);
         System.out.println(token);
         assertThat(token).isNotNull();
 
-        boolean b = this.tokenUtils.validateToken(token);
+        boolean b = this.tokenProvider.validateToken(token);
         assertThat(b).isTrue();
     }
 

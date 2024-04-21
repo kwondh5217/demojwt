@@ -17,7 +17,7 @@ import java.io.IOException;
 @RequiredArgsConstructor
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
-    private final TokenUtils tokenUtils;
+    private final TokenProvider tokenProvider;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request,
@@ -28,12 +28,14 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         String jwt = resolveToken(request);
         String requestURI = request.getRequestURI();
 
-        if(StringUtils.hasText(jwt) && tokenUtils.validateToken(jwt)){
-            Authentication authentication = tokenUtils.getAuthentication(jwt);
+        if(StringUtils.hasText(jwt) && tokenProvider.validateToken(jwt)){
+            Authentication authentication = tokenProvider.getAuthentication(jwt);
             SecurityContextHolder.getContext().setAuthentication(authentication);
             log.info("Security Context에 '{}' 인증 정보를 저장했습니다. uri :{}", authentication.getName(), requestURI);
         } else {
-            log.info("유효한 JWT 토큰이 없습니다. uri :{}", requestURI);
+            if(!requestURI.contains("/h2-console")) {
+                log.info("유효한 JWT 토큰이 없습니다. uri :{}", requestURI);
+            }
         }
         filterChain.doFilter(request, response);
     }

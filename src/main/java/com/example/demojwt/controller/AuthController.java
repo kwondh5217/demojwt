@@ -3,8 +3,7 @@ package com.example.demojwt.controller;
 
 import com.example.demojwt.dto.LoginDto;
 import com.example.demojwt.dto.TokenDto;
-import com.example.demojwt.jwt.TokenUtils;
-import io.jsonwebtoken.Jwts;
+import com.example.demojwt.jwt.TokenProvider;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
@@ -22,7 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class AuthController {
 
-    private final TokenUtils tokenUtils;
+    private final TokenProvider tokenProvider;
     private final AuthenticationManagerBuilder authenticationManagerBuilder;
 
     /* 요청 흐름
@@ -39,7 +38,7 @@ public class AuthController {
         Authentication authenticate = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
         SecurityContextHolder.getContext().setAuthentication(authenticate);
 
-        String token = tokenUtils.createToken(authenticate);
+        String token = tokenProvider.createToken(authenticate);
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.add("Authorization", "Bearer " + token);
 
